@@ -25,14 +25,14 @@ export default function SignUp({navigation}) {
 
   const SignHandler = () => {
     createUserWithEmailAndPassword(auth, email, password)
-      .then(res => {
-        console.log('user is register', res);
-        alert(res);
-        // const user = userCredential.user;
-        // alert('Your Register Successfully', user);
+      .then(userCredential => {
+        alert('Thankyou, account created successfully');
+        navigation?.replace('Login');
+        console.log(userCredential);
       })
-      .catch(err => {
-        alert('error message', err.message);
+      .catch(error => {
+        alert('Password should be at least 6 characters', error);
+        console.log(error.message);
       });
   };
 
@@ -60,6 +60,7 @@ export default function SignUp({navigation}) {
             <TextInput
               placeholder="Enter the Email"
               placeholderTextColor={'#fff'}
+              autoCapitalize="none"
               style={styles.input}
               value={email}
               onChangeText={text => setEmail(text)}
@@ -73,6 +74,7 @@ export default function SignUp({navigation}) {
             <TextInput
               placeholder="Enter the Password"
               placeholderTextColor={'#fff'}
+              autoCapitalize="none"
               style={styles.input}
               secureTextEntry={true}
               value={password}

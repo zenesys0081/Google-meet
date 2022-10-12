@@ -63,8 +63,7 @@ export default function Home({navigation}) {
           transparent={true}
           backdropOpacity={0.2}
           backdropColor={'#0005'}
-          deviceWidth={true}
-          deviceHeight={true}>
+          deviceWidth={true}>
           <View style={styles.modal_container}>
             {/* first */}
             <TouchableOpacity

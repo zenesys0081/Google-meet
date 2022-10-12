@@ -15,7 +15,7 @@ import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Lottie from 'lottie-react-native';
 import {auth} from '../../firebase/firebase';
-import {createUserWithEmailAndPassword} from 'firebase/auth';
+import {signInWithEmailAndPassword} from 'firebase/auth';
 
 const {width, height} = Dimensions.get('screen');
 export default function Login({navigation}) {
@@ -23,7 +23,16 @@ export default function Login({navigation}) {
   const [password, setPassword] = useState('');
 
   const loginHandler = () => {
-    alert('comming soon');
+    signInWithEmailAndPassword(auth, email, password)
+      .then(res => {
+        navigation?.navigate('SideDrawer', {
+          screen: 'Home',
+        });
+      })
+      .catch(err => {
+        alert('login error', err.message);
+        console.log('login error ==> ', err.message);
+      });
   };
 
   return (
@@ -51,6 +60,7 @@ export default function Login({navigation}) {
               placeholder="Enter the Email"
               placeholderTextColor={'#fff'}
               style={styles.input}
+              autoCapitalize="none"
               value={email}
               onChangeText={text => setEmail(text)}
             />
@@ -62,6 +72,7 @@ export default function Login({navigation}) {
             </View>
             <TextInput
               placeholder="Enter the Password"
+              autoCapitalize="none"
               placeholderTextColor={'#fff'}
               style={styles.input}
               value={password}
