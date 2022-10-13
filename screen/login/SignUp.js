@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,15 +23,19 @@ const {width, height} = Dimensions.get('screen');
 export default function SignUp({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const SignHandler = () => {
+    setIsLoading(true);
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         alert('Thankyou, account created successfully');
         navigation?.replace('Login');
+        setIsLoading(false);
         console.log(userCredential);
       })
       .catch(error => {
+        setIsLoading(false);
         alert('Password should be at least 6 characters', error);
         console.log(error.message);
       });
@@ -86,7 +91,13 @@ export default function SignUp({navigation}) {
             style={styles.btn_container}
             activeOpacity={0.7}
             onPress={SignHandler}>
-            <Text style={styles.btn_text}>SignUp</Text>
+            <Text style={styles.btn_text}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color="red" />
+              ) : (
+                'SignUp'
+              )}
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -146,6 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: height * 0.07,
     marginVertical: height * 0.05,
+    alignItems: 'center',
   },
   btn_text: {
     color: '#fff',

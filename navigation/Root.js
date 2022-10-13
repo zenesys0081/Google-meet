@@ -1,26 +1,33 @@
+/* eslint-disable handle-callback-err */
 /* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
-import {View, Text, Button, TouchableOpacity, Image} from 'react-native';
+
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Home from '../screen/Home/Home';
 import Splash from '../screen/splash/Splash';
 import Login from '../screen/login/Login';
 import SignUp from '../screen/login/SignUp';
-import {Dimensions} from 'react-native';
 import SideDrawer from './SideDrawer';
 import JoinMetting from '../screen/Home/JoinMetting';
+import AsyncStorage from '@react-native-community/async-storage';
+import Profile from '../screen/Home/Profile';
 
 const Stack = createNativeStackNavigator();
-const {width, height} = Dimensions.get('screen');
+
 export default function Root({navigation}) {
   const [isSplash, setIsSplash] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    AsyncStorage.getItem('login_data', (err, data) => {
+      if (!data) {
+        setIsLoggedIn(false);
+      } else {
+        setIsLoggedIn(true);
+      }
       setIsSplash(false);
-    }, 2000);
+    });
   }, []);
 
   if (isSplash) {
@@ -29,7 +36,7 @@ export default function Root({navigation}) {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName={isLoggedIn ? 'SideDrawer' : 'Login'}>
         <Stack.Screen
           name="Login"
           component={Login}
@@ -53,6 +60,15 @@ export default function Root({navigation}) {
           component={JoinMetting}
           options={{
             headerTitle: 'Join with a code',
+            headerTitleAlign: 'center',
+          }}
+        />
+        {/* profile */}
+        <Stack.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            headerTitle: 'Profile',
             headerTitleAlign: 'center',
           }}
         />

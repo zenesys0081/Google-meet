@@ -12,7 +12,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useEffect, useState} from 'react';
 const {width, height} = Dimensions.get('screen');
 
 import TabSlider from '../../components/Home/TabSlider';
@@ -63,7 +63,7 @@ export default function Home({navigation}) {
           transparent={true}
           backdropOpacity={0.2}
           backdropColor={'#0005'}
-          deviceWidth={true}>
+          deviceWidth={1}>
           <View style={styles.modal_container}>
             {/* first */}
             <TouchableOpacity

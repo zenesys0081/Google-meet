@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     marginHorizontal: height * 0.02,
   },
   text: {
-    fontFamily: 'RobotoSlab-Regular',
+    fontFamily: 'RobotoSlab-Bold',
     fontSize: height / 55,
   },
   input_container: {
@@ -72,6 +72,8 @@ const styles = StyleSheet.create({
   input: {
     height: height * 0.06,
     marginHorizontal: height * 0.02,
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: height / 45,
   },
   btn: {
     width: width * 0.94,

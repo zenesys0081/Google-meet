@@ -10,27 +10,34 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import Lottie from 'lottie-react-native';
 import {auth} from '../../firebase/firebase';
 import {signInWithEmailAndPassword} from 'firebase/auth';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const {width, height} = Dimensions.get('screen');
 export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const loginHandler = () => {
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then(res => {
+        AsyncStorage.setItem('login_data', JSON.stringify(res));
         navigation?.navigate('SideDrawer', {
           screen: 'Home',
         });
+        setIsLoading(false);
       })
       .catch(err => {
-        alert('login error', err.message);
+        setIsLoading(false);
+        alert('incorrect email and password', err.message);
         console.log('login error ==> ', err.message);
       });
   };
@@ -81,12 +88,20 @@ export default function Login({navigation}) {
             />
           </View>
           {/* login button container */}
+
           <TouchableOpacity
             style={styles.btn_container}
             activeOpacity={0.7}
             onPress={loginHandler}>
-            <Text style={styles.btn_text}>Login</Text>
+            <Text style={styles.btn_text}>
+              {isLoading ? (
+                <ActivityIndicator size="large" color="red" />
+              ) : (
+                'Login'
+              )}
+            </Text>
           </TouchableOpacity>
+
           {/* SignUp button container */}
           <TouchableOpacity
             style={styles.signup_container}
@@ -152,6 +167,7 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: height * 0.07,
     marginVertical: height * 0.04,
+    alignItems: 'center',
   },
   btn_text: {
     color: '#fff',
