@@ -12,6 +12,7 @@ import SideDrawer from './SideDrawer';
 import JoinMetting from '../screen/Home/JoinMetting';
 import AsyncStorage from '@react-native-community/async-storage';
 import Profile from '../screen/Home/Profile';
+import StartMetting from '../screen/metting-screen/StartMetting';
 
 const Stack = createNativeStackNavigator();
 
@@ -71,6 +72,12 @@ export default function Root({navigation}) {
             headerTitle: 'Profile',
             headerTitleAlign: 'center',
           }}
+        />
+        {/* start metting  */}
+        <Stack.Screen
+          name="StartMetting"
+          component={StartMetting}
+          options={{headerShown: false}}
         />
       </Stack.Navigator>
     </NavigationContainer>

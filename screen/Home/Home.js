@@ -26,6 +26,11 @@ export default function Home({navigation}) {
     setModalVisible(!isModalVisible);
   };
 
+  const startMettingHandler = () => {
+    setModalVisible(!isModalVisible);
+    navigation.navigate('StartMetting');
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <Fragment>
@@ -80,7 +85,7 @@ export default function Home({navigation}) {
             {/* second */}
             <TouchableOpacity
               style={styles.modal_item_container}
-              onPress={() => alert('comming soon')}>
+              onPress={startMettingHandler}>
               <Image
                 source={require('../../assets/image/modal-img/video.png')}
                 style={styles.img}
