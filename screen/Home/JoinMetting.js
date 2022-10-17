@@ -6,17 +6,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
-// import CustomModal from '../../components/Home/CustomModal';
-
+import React from 'react';
 const {width, height} = Dimensions.get('screen');
 
 export default function JoinMetting() {
-  // const [isModalVisible, setModalVisible] = useState(false);
-
-  // const toggleModal = () => {
-  //   setModalVisible(!isModalVisible);
-  // };
   return (
     <View style={styles.screen}>
       <View style={styles.text_container}>
@@ -31,20 +24,9 @@ export default function JoinMetting() {
           placeholderTextColor={'#0008'}
         />
       </View>
-      <TouchableOpacity
-        style={styles.btn}
-        activeOpacity={0.7}
-        // onPress={toggleModal}
-      >
+      <TouchableOpacity style={styles.btn} activeOpacity={0.7}>
         <Text style={styles.btn_text}>Join Metting</Text>
       </TouchableOpacity>
-      {/* <CustomModal
-        isModalVisible={isModalVisible}
-        toggleModal={toggleModal}
-        heading1={'item1'}
-        heading2={'item2'}
-        heading3={'item3'}
-      /> */}
     </View>
   );
 }

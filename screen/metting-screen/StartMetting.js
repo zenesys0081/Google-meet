@@ -11,11 +11,13 @@ import {
   Platform,
   StatusBar,
   Image,
+  Button,
 } from 'react-native';
-import React, {Fragment} from 'react';
+import React, {Fragment, useState} from 'react';
 import Header from '../../components/Home/Header';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import Modal from 'react-native-modal';
+import ModalData from '../../dummyData/ModalData';
 const {width, height} = Dimensions.get('screen');
 
 const bottomIcon = [
@@ -24,18 +26,21 @@ const bottomIcon = [
     img: 'phone-alt',
     color: 'red',
     bgColor: 'red',
+    action: 'hangup',
   },
   {
     id: '2',
     img: 'video',
     color: '#fff',
     bgColor: '#000',
+    action: 'camera',
   },
   {
     id: '3',
     img: 'microphone',
     color: '#fff',
     bgColor: '#000',
+    action: 'mic',
   },
 
   {
@@ -43,6 +48,7 @@ const bottomIcon = [
     img: 'hand-paper',
     color: '#fff',
     bgColor: '#000',
+    action: 'hand',
   },
 
   {
@@ -50,10 +56,52 @@ const bottomIcon = [
     img: 'ellipsis-v',
     color: '#fff',
     bgColor: '#000',
+    action: 'more',
   },
 ];
 
 export default function StartMetting({navigation}) {
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const onAction = payload => {
+    switch (payload.action) {
+      case 'hangup':
+        onHangupAction(payload);
+        break;
+      case 'camera':
+        onCameraAction(payload);
+        break;
+      case 'mic':
+        onMicAction(payload);
+        break;
+      case 'hand':
+        onHandRaise(payload);
+        break;
+      case 'more':
+        onMore(payload);
+        break;
+      default:
+        console.log('Invalid action');
+    }
+  };
+
+  const onHangupAction = action => {
+    console.log('onHangupAction', action);
+  };
+  const onCameraAction = action => {
+    console.log('onCameraAction', action);
+  };
+  const onMicAction = action => {
+    console.log('onMicAction', action);
+  };
+  const onHandRaise = action => {
+    console.log('onMicAction', action);
+  };
+  const onMore = action => {
+    console.log('modal is open');
+    setModalVisible(true);
+  };
+
   return (
     <Fragment>
       <ScrollView style={styles.container}>
@@ -105,7 +153,7 @@ export default function StartMetting({navigation}) {
                   <TouchableOpacity
                     style={styles.icon_container}
                     key={index}
-                    onPress={() => alert('comming soon')}>
+                    onPress={() => onAction(item)}>
                     <Icon name={item.img} color={item.color} size={30} />
                   </TouchableOpacity>
                 );
@@ -113,6 +161,31 @@ export default function StartMetting({navigation}) {
             </View>
           </View>
         </SafeAreaView>
+        {/* modal container  */}
+        <Modal
+          isVisible={isModalVisible}
+          animationType="fade"
+          transparent={true}
+          backdropOpacity={0.2}
+          backdropColor={'#0005'}
+          deviceHeight={1}
+          deviceWidth={1}>
+          {/* modal open */}
+          <View style={styles.modal_container}>
+            {ModalData.map((data, index) => {
+              return (
+                <TouchableOpacity
+                  style={styles.more_image_container}
+                  key={index}
+                  activeOpacity={0.7}
+                  onPress={() => setModalVisible(false)}>
+                  <Image source={data.icon} style={styles.modal_img} />
+                  <Text style={styles.modal_text}>{data.name}</Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </Modal>
       </ScrollView>
       {Platform.OS === 'ios' ? (
         <StatusBar translucent animated={true} barStyle={'light-content'} />
@@ -211,5 +284,38 @@ const styles = StyleSheet.create({
     backgroundColor: '#606363',
     justifyContent: 'center',
     borderRadius: 40,
+  },
+  // modal css
+  modal_container: {
+    backgroundColor: '#4f4f52',
+    height: height * 0.3,
+    position: 'absolute',
+    right: 0,
+    left: 0,
+    bottom: 0,
+    borderRadius: 15,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  more_image_container: {
+    width: width * 0.28,
+    height: height * 0.1,
+    marginVertical: height * 0.01,
+    marginHorizontal: height * 0.012,
+    justifyContent: 'center',
+    backgroundColor: 'gray',
+    borderRadius: 12,
+    marginTop: height * 0.02,
+  },
+  modal_img: {
+    alignSelf: 'center',
+    width: 32,
+    height: 32,
+    tintColor: '#fff',
+  },
+  modal_text: {
+    fontSize: height / 58,
+    textAlign: 'center',
+    color: '#fff',
   },
 });
