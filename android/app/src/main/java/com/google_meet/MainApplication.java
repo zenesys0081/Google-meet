@@ -1,5 +1,7 @@
 package com.google_meet;
 
+import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- add
 import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
@@ -15,6 +17,7 @@ import com.facebook.soloader.SoLoader;
 import com.google_meet.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          new VectorIconsPackage()
           return packages;
         }
 
@@ -39,6 +43,11 @@ public class MainApplication extends Application implements ReactApplication {
           return "index";
         }
       };
+
+       @Override
+      protected JSIModulePackage getJSIModulePackage() {
+        return new ReanimatedJSIModulePackage(); // <- add
+      }
 
   private final ReactNativeHost mNewArchitectureNativeHost =
       new MainApplicationReactNativeHost(this);

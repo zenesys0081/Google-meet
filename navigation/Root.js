@@ -13,6 +13,7 @@ import JoinMetting from '../screen/Home/JoinMetting';
 import AsyncStorage from '@react-native-community/async-storage';
 import Profile from '../screen/Home/Profile';
 import StartMetting from '../screen/metting-screen/StartMetting';
+import {Platform, StatusBar} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
