@@ -3,8 +3,11 @@
     "camara",
     "comming",
     "contianer",
+    "Discription",
     "homeleft",
     "Metting",
+    "Responce",
     "Roboto"
-  ]
+  ],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

@@ -1,19 +1,21 @@
 import io from 'socket.io-client';
 
-const SOCKET_URL = 'http://localhost:3000/';
+const SOCKET_URL = 'http://localhost:3000';
 
-class wsServers {
-  initalizedSocket = async () => {
+class WSService {
+  initializeSocket = async () => {
     try {
       this.socket = io(SOCKET_URL, {
         transports: ['webSocket'],
       });
 
-      this.socket.on('connected', data => {
+      console.log('initializing socket', this.socket);
+
+      this.socket.on('connect', data => {
         console.log('user is connected ..');
       });
 
-      this.socket.on('disconnected', data => {
+      this.socket.on('disconnect', data => {
         console.log('user is disconnected..');
       });
 
@@ -25,7 +27,7 @@ class wsServers {
     }
   };
 
-  emit(userEvent, data = []) {
+  emit(userEvent, data = {}) {
     this.socket.emit(userEvent, data);
   }
 
@@ -38,5 +40,5 @@ class wsServers {
   }
 }
 
-const socketServices = wsServers();
+const socketServices = new WSService();
 export default socketServices;

@@ -1,3 +1,5 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 import {
@@ -12,12 +14,16 @@ import {
   StatusBar,
   Image,
   Button,
+  Alert,
+  Share,
 } from 'react-native';
 import React, {Fragment, useState} from 'react';
 import Header from '../../components/Home/Header';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Modal from 'react-native-modal';
 import ModalData from '../../dummyData/ModalData';
+import Clipboard from '@react-native-clipboard/clipboard';
+
 const {width, height} = Dimensions.get('screen');
 
 const bottomIcon = [
@@ -25,21 +31,18 @@ const bottomIcon = [
     id: '1',
     img: 'phone-alt',
     color: 'red',
-    bgColor: 'red',
     action: 'hangup',
   },
   {
     id: '2',
     img: 'video',
     color: '#fff',
-    bgColor: '#000',
     action: 'camera',
   },
   {
     id: '3',
     img: 'microphone',
     color: '#fff',
-    bgColor: '#000',
     action: 'mic',
   },
 
@@ -47,7 +50,6 @@ const bottomIcon = [
     id: '4',
     img: 'hand-paper',
     color: '#fff',
-    bgColor: '#000',
     action: 'hand',
   },
 
@@ -55,13 +57,21 @@ const bottomIcon = [
     id: '5',
     img: 'ellipsis-v',
     color: '#fff',
-    bgColor: '#000',
     action: 'more',
   },
 ];
 
 export default function StartMetting({navigation}) {
   const [isModalVisible, setModalVisible] = useState(false);
+  const [mettingId, setMettingId] = useState('meet.googel.com/V4xpr8hLV5');
+  const [enterCode, setEnterId] = useState('xrp-tzww-oww');
+
+  // copy metting
+  const [copiedText, setCopiedText] = useState('');
+  const copyToClipboard = () => {
+    Clipboard.setString(mettingId);
+    Alert.alert('Copy Successfully');
+  };
 
   const onAction = payload => {
     switch (payload.action) {
@@ -85,6 +95,7 @@ export default function StartMetting({navigation}) {
     }
   };
 
+  // bottom action
   const onHangupAction = action => {
     console.log('onHangupAction', action);
   };
@@ -102,10 +113,82 @@ export default function StartMetting({navigation}) {
     setModalVisible(true);
   };
 
+  // nested modal switch case
+  const onModal = payload => {
+    switch (payload.path) {
+      case 'Chat':
+        onMessage(payload);
+        break;
+      case 'Share':
+        onShare(payload);
+        break;
+      case 'Caption':
+        onCaption(payload);
+        break;
+      case 'Setting':
+        onSetting(payload);
+        break;
+      case 'HostControl':
+        onHostControl(payload);
+        break;
+      case 'Report':
+        onReport(payload);
+        break;
+      default:
+        console.log('Invalid action');
+    }
+  };
+
+  const onMessage = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+
+  const onShare = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+
+  const onCaption = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+  const onSetting = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+  const onHostControl = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+  const onReport = action => {
+    setModalVisible(false);
+    navigation.navigate(action.path);
+  };
+
+  const onShareLink = async () => {
+    try {
+      const result = await Share.share({
+        message: `To join the meeting on Google Meet, click this link: ${mettingId} Or open Meet and enter this code: ${enterCode}.`,
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          alert('copy successfully');
+        } else {
+          console.log('share data error');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('cancel successfully.');
+      }
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <Fragment>
       <ScrollView style={styles.container}>
-        <SafeAreaView>
+        <SafeAreaView style={{marginTop: height * 0.025}}>
           <Header navigation={navigation} />
 
           <View style={styles.share_container}>
@@ -115,21 +198,19 @@ export default function StartMetting({navigation}) {
             </Text>
             <View style={styles.copy_container}>
               <View style={styles.copy_sub_container}>
-                <Text style={styles.copy_metting_id}>
-                  meet.googel.com/V4xpr8hLrLRas
-                </Text>
+                <Text style={styles.copy_metting_id}>{mettingId}</Text>
                 <Icon
                   name="copy"
                   color={'#fff'}
                   size={23}
-                  onPress={() => alert('comming soon')}
+                  onPress={copyToClipboard}
                 />
               </View>
             </View>
             <TouchableOpacity
               style={styles.share_btn_container}
               activeOpacity={0.7}
-              onPress={() => alert('comming soon')}>
+              onPress={onShareLink}>
               <Icon name="share-alt" size={20} color={'#000'} />
               <Text style={styles.share_btn_text}>Share Invite</Text>
             </TouchableOpacity>
@@ -178,7 +259,7 @@ export default function StartMetting({navigation}) {
                   style={styles.more_image_container}
                   key={index}
                   activeOpacity={0.7}
-                  onPress={() => setModalVisible(false)}>
+                  onPress={() => onModal(data)}>
                   <Image source={data.icon} style={styles.modal_img} />
                   <Text style={styles.modal_text}>{data.name}</Text>
                 </TouchableOpacity>
@@ -250,7 +331,7 @@ const styles = StyleSheet.create({
     fontFamily: 'RobotoSlab-Regular',
   },
   camara_container: {
-    height: height * 0.2,
+    // height: height * 0.2,
   },
   camara_img_container: {
     backgroundColor: 'gray',
@@ -268,10 +349,12 @@ const styles = StyleSheet.create({
   },
   // bottam container
   bottom_container: {
+    marginHorizontal: height * 0.02,
     position: 'relative',
-    top: 65,
+    bottom: Platform.OS === 'ios' ? 10 : 0,
     right: 0,
     left: 0,
+    marginTop: height * 0.05,
   },
   bottom_bar: {
     flexDirection: 'row',

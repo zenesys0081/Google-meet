@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 /* eslint-disable handle-callback-err */
 /* eslint-disable no-alert */
 /* eslint-disable no-unused-vars */
@@ -13,11 +14,18 @@ import JoinMetting from '../screen/Home/JoinMetting';
 import AsyncStorage from '@react-native-community/async-storage';
 import Profile from '../screen/Home/Profile';
 import StartMetting from '../screen/metting-screen/StartMetting';
-import {Platform, StatusBar} from 'react-native';
+import Chat from '../screen/metting-screen/Chat';
+import Setting from '../screen/metting-screen/Setting';
+import HostControl from '../screen/metting-screen/HostControl';
+import Report from '../screen/metting-screen/Report';
+import {Platform, StatusBar, Text, TouchableOpacity, View} from 'react-native';
+import {NavigationActions} from 'react-navigation';
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const Stack = createNativeStackNavigator();
 
-export default function Root({navigation}) {
+export default function Root() {
   const [isSplash, setIsSplash] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -80,7 +88,123 @@ export default function Root({navigation}) {
           component={StartMetting}
           options={{headerShown: false}}
         />
+        {/* nested modal add screen  */}
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={({navigation, route}) => {
+            return {
+              headerTitle: 'In call message',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+
+              headerLeft: () => {
+                return (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name="cancel" size={30} color={'#fff'} />
+                  </TouchableOpacity>
+                );
+              },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={Setting}
+          options={({navigation, route}) => {
+            return {
+              headerTitle: 'Settings',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+
+              headerLeft: () => {
+                return (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name="cancel" size={30} color={'#fff'} />
+                  </TouchableOpacity>
+                );
+              },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="HostControl"
+          component={HostControl}
+          options={({navigation, route}) => {
+            return {
+              headerTitle: 'Host controls',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+
+              headerLeft: () => {
+                return (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name="cancel" size={30} color={'#fff'} />
+                  </TouchableOpacity>
+                );
+              },
+            };
+          }}
+        />
+        <Stack.Screen
+          name="Report"
+          component={Report}
+          options={({navigation, route}) => {
+            return {
+              headerTitle: 'Report abuse',
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                color: '#fff',
+              },
+              headerStyle: {
+                backgroundColor: '#000',
+              },
+
+              headerLeft: () => {
+                return (
+                  <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Icon name="cancel" size={30} color={'#fff'} />
+                  </TouchableOpacity>
+                );
+              },
+              headerRight: () => {
+                return (
+                  <TouchableOpacity onPress={() => alert('comming soon')}>
+                    <Text
+                      style={{
+                        fontFamily: 'RobotoSlab-Bold',
+                        color: '#8ca9ed',
+                        fontSize: 16,
+                      }}>
+                      Submit
+                    </Text>
+                  </TouchableOpacity>
+                );
+              },
+            };
+          }}
+        />
       </Stack.Navigator>
+      {Platform.OS === 'ios' ? (
+        <StatusBar translucent animated={true} barStyle={'dark-content'} />
+      ) : (
+        <StatusBar translucent animated={true} barStyle={'dark-content'} />
+      )}
     </NavigationContainer>
   );
 }

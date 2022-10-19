@@ -58,6 +58,9 @@ export default function Header({navigation}) {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   main_container: {
     height: height * 0.06,
     flexDirection: 'row',
