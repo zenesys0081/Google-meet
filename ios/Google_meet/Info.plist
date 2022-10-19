@@ -51,7 +51,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
+	<!-- add the config webrtc  -->	
+	<key>NSMicrophoneUsageDescription</key>
+	<string>I NEED MICROPHONE</string>
+	<key>NSCameraUsageDescription</key>
+	<string>I NEED CAMERA</string>
 
 	<key>UIAppFonts</key>
 	<array>

@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
+
 const {width, height} = Dimensions.get('screen');
 
 export default function JoinMetting() {
